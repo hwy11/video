@@ -1,3 +1,4 @@
 moviepy
 faster-whisper
 pyyaml
+pytest
