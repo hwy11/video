@@ -1,0 +1,32 @@
+# ---------------- 文件路径配置 ----------------
+input_audio: "assets/audio.mp3"
+image_folder: "assets/images/"
+output_file: "output/final_video.mp4"
+
+# ---------------- 视频基础设置 ----------------
+resolution: [1920, 1080]
+fps: 30
+
+# ---------------- 视觉效果配置 ----------------
+ken_burns_effect:
+  enabled: true
+  zoom_factor: 1.15
+
+transition:
+  type: "fade"
+  duration_sec: 0.5
+
+# ---------------- 字幕样式配置 ----------------
+subtitle_style:
+  enabled: true
+  font: "Arial-Bold"
+  fontsize: 72
+  color: "white"
+  stroke_color: "black"
+  stroke_width: 2
+  position: ["center", "bottom"]
+
+# ---------------- ASR 模型配置 ----------------
+whisper_model:
+  size: "base"
+  device: "cpu"
