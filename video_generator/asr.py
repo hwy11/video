@@ -1,4 +1,5 @@
 """ASR module for transcribing audio into timed segments."""
+from pathlib import Path
 from typing import List, Dict
 
 try:  # pragma: no cover - handled in tests via monkeypatch
@@ -25,12 +26,23 @@ def transcribe_audio(audio_path: str, model_config: Dict) -> List[Dict]:
     """
     if WhisperModel is None:
         raise RuntimeError("faster-whisper is not installed")
+
+    audio_path_obj = Path(audio_path)
+    if not audio_path_obj.is_file():
+        raise FileNotFoundError(f"Audio file not found: {audio_path}")
+
     model = WhisperModel(
         model_config.get("size", "base"),
         device=model_config.get("device", "cpu"),
         compute_type=model_config.get("compute_type", "int8"),
     )
-    segments, _ = model.transcribe(audio_path, word_timestamps=False)
+
+    transcribe_kwargs = {"word_timestamps": False}
+    for key in ("language", "beam_size", "task"):
+        if key in model_config:
+            transcribe_kwargs[key] = model_config[key]
+
+    segments, _ = model.transcribe(str(audio_path_obj), **transcribe_kwargs)
     return [
         {
             "sentence": seg.text.strip(),

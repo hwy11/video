@@ -30,3 +30,8 @@ subtitle_style:
 whisper_model:
   size: "base"
   device: "cpu"
+  compute_type: "int8"
+  # 可选：指定识别语言，如 'en', 'zh' 等；不填则自动检测
+  language: "auto"
+  # 可选：beam search 的宽度，数值越大越准确但越慢
+  beam_size: 5

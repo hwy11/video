@@ -128,6 +128,9 @@ subtitle_style:
 whisper_model:
   size: "base"
   device: "cpu"
+  compute_type: "int8"  # 推理精度，可选值: float16, int8 等
+  language: "auto"      # 识别语言，不填则自动检测
+  beam_size: 5          # beam search 宽度，越大越准但越慢
 ```
 
 ## 使用方法 (Usage)
