@@ -8,15 +8,16 @@ except Exception:  # ImportError if dependency missing
     WhisperModel = None
 
 
-def transcribe_audio(audio_path: str, model_config: Dict) -> List[Dict]:
+def transcribe_audio(audio_path: str, config: Dict) -> List[Dict]:
     """Transcribe ``audio_path`` using ``faster-whisper``.
 
     Parameters
     ----------
     audio_path:
         Path to the input audio file.
-    model_config:
-        Dictionary containing model options such as model ``size`` and ``device``.
+    config:
+        The full application configuration dictionary. Model options are
+        expected under the ``whisper_model`` key.
 
     Returns
     -------
@@ -31,13 +32,20 @@ def transcribe_audio(audio_path: str, model_config: Dict) -> List[Dict]:
     if not audio_path_obj.is_file():
         raise FileNotFoundError(f"Audio file not found: {audio_path}")
 
+    # 从主配置中提取模型相关的子配置
+    model_config = config.get("whisper_model", {})
+
     model = WhisperModel(
-        model_config.get("size", "base"),
+        model_config.get("size", "large"),
         device=model_config.get("device", "cpu"),
         compute_type=model_config.get("compute_type", "int8"),
     )
 
-    transcribe_kwargs = {"word_timestamps": False}
+    transcribe_kwargs = {
+        "word_timestamps": False,
+        "temperature": model_config.get("temperature", 0.0),
+        "patience": model_config.get("patience", 1.2),
+    }
     for key in ("language", "beam_size", "task"):
         if key in model_config:
             transcribe_kwargs[key] = model_config[key]
