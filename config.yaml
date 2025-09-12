@@ -4,13 +4,13 @@ image_folder: "assets/images/"
 output_file: "output/final_video.mp4"
 
 # ---------------- 视频基础设置 ----------------
-resolution: [1920, 1080]
+# resolution: [1920, 1080]
 fps: 30
 
 # ---------------- 视觉效果配置 ----------------
 ken_burns_effect:
   enabled: true
-  zoom_factor: 1.15
+  zoom_factor: 1.3
 
 transition:
   type: "fade"
